@@ -375,8 +375,6 @@ function optimize_youtube_video_replaceIframe( $iframe ) {
     $thumbtype = $iframe['nowebp'] ? 'vi' : 'vi_webp';
     $thumbext = $iframe['nowebp'] ? 'jpg' : 'webp';
 
-    $srcpreloader = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E";
-
     $lazyimgbinding = carbon_get_theme_option('optimize_youtube_video_lazyimg_custom_binding');
     if(!$lazyimgbinding) {
         $lazyimgbinding='src="[syv_image_src]" loading="lazy"';
