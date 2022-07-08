@@ -6,10 +6,10 @@ $videowrapbgcolor = isset($videowrapbgcolor) && !empty($videowrapbgcolor) ? $vid
 ?>
 <style type="text/css" id="optimize-youtube-video-frontend-css">
     .youtube-video-ts,
-    .youtube-video-ts [data-img-webpfield],
-    .youtube-video-nocls {
+    .youtube-video-ts [data-img-webpfield] {
         position: relative;
         max-width: 100%;
+        display: inline-block;
     }
     .youtube-video-ts [data-img-webpfield] {
         display: flex;

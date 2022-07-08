@@ -30,7 +30,7 @@ function optimize_youtube_video_carbon_fields_settings() {
         Field::make( 'html', 'optimize_youtube_video_implementation_mustavoid')
         ->set_html( '
             <h1>Quick Tips</h1>
-            <p>Do not add a new line for the attributes, make them one line like the markup below. Some themes or builders automatically generate a comment/shortcode for the new line, we can\'t capture your attirubte if you do that.</p>
+            <p>Do not add a new line for the attributes, make them one line like the usage below. Some themes or builders automatically generate a comment/shortcode for the new line, we can\'t capture your attirubte if you do that.</p>
             <p>For WP Rocket - disable "Replace Youtube videos by thumbnail" in Lazyload Tab</p>
             <p>Do not lazyload "Above the fold Content" videos for Large contentful paint to increase your page speed performance.</p>
 
@@ -38,7 +38,7 @@ function optimize_youtube_video_carbon_fields_settings() {
             <br>
             <code>
                 &lt;iframe 
-                    src="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
                     width="560"
                     height="315"
                     nopwebp="1"
@@ -61,11 +61,14 @@ function optimize_youtube_video_carbon_fields_settings() {
             <br>
 
             <h1>Lazyload</h1>
-            <p>Speed up images by adding <a href="https://wordpress.org/plugins/search/lazyload/" target="_blank">lazyloading your images</a>.</p>
+            <p>Speed up images by adding <a href="https://wordpress.org/plugins/search/lazyload/" target="_blank">lazyloading plugin</a>.</p>
             <p>If you have caching plugin with lazyload feature you must follow their <a href="#lazyimgmarkup">image markup</a>.</p>
-            <p>Example for WP Rocket or Rocket Lazyload:</p>
-            <p><strong>Lazy Images Custom Binding</strong>: data-lazy-src="[syv_image_src]" src="data:image/svg+xml,%3Csvg%20xmlns=\'http://www.w3.org/2000/svg\'%20viewBox=\'0%200%200%200\'%3E%3C/svg%3E"</p>
-
+            <h3>Lazy Images Custom Binding Samples</h3>
+            <p><strong>WP Rocket or Rocket Lazyload</strong>: <code>data-lazy-src="[syv_image_src]" src="data:image/svg+xml,%3Csvg%20xmlns=\'http://www.w3.org/2000/svg\'%20viewBox=\'0%200%200%200\'%3E%3C/svg%3E"</p></code>
+            <p><strong>W3 Total Cache, WP Smush or any lazyloading plugins</strong>: <code>src="[syv_image_src]" loading="lazy"</p></code>
+            <p>
+                <a href="#imagevariables">Click here</a> for image variables.
+            </p>
             <br>
         '),
 
@@ -95,7 +98,7 @@ function optimize_youtube_video_carbon_fields_settings() {
             'maxresdefault' => 'Max Res'
         ) )
         ->set_default_value( 'sddefault' )
-        ->set_help_text( 'You can change this to your shortcode/markup parameter.' ),
+        ->set_help_text( 'You can change this to your iframe attribute.' ),
         
         Field::make( 'select', 'optimize_youtube_video_media_thumbnail_size_mobile', 'Media Thumbnail Size (Mobile)' )
         ->add_options( array(
@@ -106,13 +109,13 @@ function optimize_youtube_video_carbon_fields_settings() {
             'maxresdefault' => 'Max Res'
         ) )
         ->set_default_value( 'mqdefault' )
-        ->set_help_text( 'You can change this to your iframe markup parameter.' ),
+        ->set_help_text( 'You can change this to your iframe attribute.' ),
 
 
 
         Field::make( 'html', 'optimize_youtube_video_media_thumbnail_size_html')
         ->set_html( '
-        <p>* Standard -> sddefault 640x480</p>
+        <p id="resodetails">* Standard -> sddefault 640x480</p>
         <p>* Default -> default 120x90</p>
         <p>* Medium -> mqdefault 320x180</p>
         <p>* High -> hqdefault 480x360</p>
@@ -128,43 +131,74 @@ function optimize_youtube_video_carbon_fields_settings() {
         '),
 
         Field::make( 'textarea', 'optimize_youtube_video_lazyimg_custom_binding', 'Lazy Images Custom Binding' )
-        ->set_default_value( 'src="[syv_image_src]" loading="lazy"' )
-        ->set_help_text( 'Custom Binding for Lazy Images to support any loazyload plugin | use [syv_image_src] as variable to replace with the image source.' ),
-
-        Field::make( 'html', 'optimize_youtube_video_img_placeholder_html')
+        ->set_default_value( 'src="[syv_image_src]" loading="lazy"' ),
+        Field::make( 'html', 'optimize_youtube_video_img_varlink_1')
         ->set_html( '
         <p>
-            You can use this placeholder to your image src attribute if you have lazyload plugin <strong>data:image/svg+xml,%3Csvg%20xmlns=\'http://www.w3.org/2000/svg\'%20viewBox=\'0%200%200%200\'%3E%3C/svg%3E</strong>
+            Custom Binding for Lazy Images to support any loazyload plugin <a href="#imagevariables">Click here</a> for image variables. Working with SRCSETS? <a href="#workingsrcset">Try this snippet!</a>
         </p>
         ' ),
+
         
         Field::make( 'textarea', 'optimize_youtube_video_nonlazyimg_custom_binding', 'Non-Lazy Images Custom Binding' )
-        ->set_default_value( 'src="[syv_image_src]" loading="eager"' )
-        ->set_help_text( 'Custom Binding for Non-Lazy Images | use [syv_image_src] as variable to replace with the image source.' ),
+        ->set_default_value( 'src="[syv_image_src]" loading="eager"' ),
+        Field::make( 'html', 'optimize_youtube_video_img_varlink_2')
+        ->set_html( '
+        <p>
+            Custom Binding for Non-Lazy Images <a href="#imagevariables">Click here</a> for image variables.
+        </p>
+
+        ' ),
 
         Field::make( 'text', 'optimize_youtube_video_button_arialabel', 'Youtube play button aria-label' )
         ->set_default_value( 'play Youtube video' ),
+
+        Field::make( 'html', 'optimize_youtube_video_img_placeholder_html')
+        ->set_html( '
+        <h3 id="imagevariables">Image variables</h3>
+        <p><code>[syv_image_src]</code> -> Current Image</p>
+        <p><code>[syv_image_src_default]</code> -> Thumbnail 120x90</p>
+        <p><code>[syv_image_src_sddefault]</code> -> Thumbnail 640x480</p>
+        <p><code>[syv_image_src_mqdefault]</code> -> Thumbnail 320x180</p>
+        <p><code>[syv_image_src_hqdefault]</code> -> Thumbnail 480x360</p>
+        <p><code>[syv_image_src_maxresdefault]</code> -> Thumbnail 1280x720</p>
+        ' ),
+
+
         Field::make( 'html', 'optimize_youtube_video_implementation_and_markup')
         ->set_html( '
         <h3 id="attributes">Attribute Details</h3>
-        <p><strong>nopwebp</strong> - (optional) | Back to jpg format thumbnail (Not Recommended, use webp for next-gen format images by removing this attribute)</p>
-        <p><strong>ytargs</strong> - (optional) | arguments for the video source, if you don\'t want auto play after click leave it empty.</p>
+        <p><strong>nopwebp</strong> - (optional) | Back to jpg format thumbnail (Not Recommended, use webp for next-gen format images by removing this attribute, removed by default)</p>
+        <p><strong>ytargs</strong> - (optional) | query parameters for the video source, if you don\'t want auto play after click leave it empty, removed by default</p>
         <p><strong>thumbreso</strong> - (optional) (default: <strong>sddefault</strong>) | Resolution of the thumbnail for Desktop</p>
-        <p><strong>thumbresomobile</strong> - (optional) (default: <strong>sddefault</strong>) | Resolution of the thumbnail for Mobile</p>
-        <strong>Resolution Details:</strong>
-        <p>* Standard -> sddefault 640x480</p>
-        <p>* Default -> default 120x90</p>
-        <p>* Medium -> mqdefault 320x180</p>
-        <p>* High -> hqdefault 480x360</p>
-        <p>* Max Res -> maxresdefault 1280x720</p>
+        <p><strong>thumbresomobile</strong> - (optional) (default: <strong>mqdefault</strong>) | Resolution of the thumbnail for Mobile</p>
+        <p><a href="#resodetails">Click here</a> for resolution details.</p>
         <strong>Disabling Lazyload by adding any of these attributes</strong>
         <p><code>data-no-lazy</code> <code>loading="eager"</code> <code>data-skip-lazy</code> <code>skip-lazy</code></p>
+
+
+        <br></br>
+        <h1 id="workingsrcset">Working with SRCSET? Try this snippet to your Lazy Images Custom Binding</h1><br>
+        <code>
+            srcset="[syv_image_src_default] 120w,<br>
+            [syv_image_src_mqdefault] 320w,<br>
+            [syv_image_src_hqdefault] 480w,<br>         
+            [syv_image_src_sddefault] 640w,<br>
+            [syv_image_src_maxresdefault] 1280w"
+            <br><br>
+
+            sizes="(max-width: 320px) 120px, <br>
+            (max-width: 480px) 320px, <br>
+            (max-width: 640px) 480px, <br>
+            1280px"
+        </code>
+
 
         <br><br>
         <h1>Not using iFrame? We have a html markup for you.</h1>
         <code>
             &lt;div class="youtube-video-ts"&gt; <br>
-                &lt;div data-img-webpfield data-yt-src="https://www.youtube.com/watch?v=dQw4w9WgXcQ" width="560" height="315" style="width: 560px; height: 315px;"&gt; <br>
+                &lt;div data-img-webpfield data-yt-src="https://www.youtube.com/embed/dQw4w9WgXcQ" width="560" height="315" style="width: 560px; height: 315px;"&gt; <br>
                     &lt;img src="https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/hqdefault.webp" width="480" height="360" alt="Youtube title here" /&gt; <br>
                     &lt;button class="play" aria-label="play Youtube video"&gt; &lt;/button&gt; <br>
                 &lt;/div&gt; <br>
@@ -358,7 +392,32 @@ function optimize_youtube_video_override_youtubeiframes( $content ) {
     return $content;
 }
 
+function optimize_youtube_video_getimgurl( $iframe, $reso="sddefault" ) {
 
+    $type = $iframe['nowebp'] ? 'vi' : 'vi_webp';
+
+    $ext = $iframe['nowebp'] ? '.jpg' : '.webp';
+
+    return 'https://i.ytimg.com/'.$type.'/'.$iframe['youtube_id'].'/'.$reso.$ext.'';
+
+}
+
+
+function optimize_youtube_video_urlreplace_fromvar($buffer="", $iframe, $reso ) {
+
+    $buffer = str_replace('[syv_image_src]', optimize_youtube_video_getimgurl( $iframe, $reso ), $buffer);
+    
+    $allowed_resolutions = optimize_youtube_video_allowed_resolutions();
+
+    foreach( $allowed_resolutions as $key => $resolution ) {
+        
+        $buffer = str_replace('[syv_image_src_'.$key.']', optimize_youtube_video_getimgurl( $iframe, $key ), $buffer);
+
+    }
+
+    return $buffer;
+
+}
 
 function optimize_youtube_video_replaceIframe( $iframe ) {
 
@@ -388,15 +447,23 @@ function optimize_youtube_video_replaceIframe( $iframe ) {
     $simpleyoutubevideoplayiframeattrs = carbon_get_theme_option('optimize_youtube_video_iframeattributes');
 
     if(wp_is_mobile()):
-        $srcmobile = 'https://i.ytimg.com/'.$thumbtype.'/'.$iframe['youtube_id'].'/'.$iframe['thumbresomobile'].'.'.$thumbext.'';
-        $imgsrc = $iframe['lazyload'] ? str_replace( '[syv_image_src]', $srcmobile, $lazyimgbinding ) : str_replace( '[syv_image_src]', $srcmobile, $nonlazyimgbinding );
+
+        $imglazycontent = optimize_youtube_video_urlreplace_fromvar($lazyimgbinding, $iframe, $iframe['thumbresomobile']);
+        $imgnonlazycontent = optimize_youtube_video_urlreplace_fromvar($nonlazyimgbinding, $iframe, $iframe['thumbresomobile']);
+        
+        $imgattrs = $iframe['lazyload'] ? $imglazycontent : $imgnonlazycontent;
+        
         $content .= '
-        <img '.$imgsrc.' width="'.$allowed_resolutions[$iframe['thumbresomobile']]['width'].'" height="'.$allowed_resolutions[$iframe['thumbresomobile']]['height'].'" alt="'.$iframe['title'].'" />';
+        <img '.$imgattrs.' width="'.$allowed_resolutions[$iframe['thumbresomobile']]['width'].'" height="'.$allowed_resolutions[$iframe['thumbresomobile']]['height'].'" alt="'.$iframe['title'].'" />';
     else:
-        $srcdefault = 'https://i.ytimg.com/'.$thumbtype.'/'.$iframe['youtube_id'].'/'.$iframe['thumbreso'].'.'.$thumbext.''; 
-        $imgsrc = $iframe['lazyload'] ? str_replace( '[syv_image_src]', $srcdefault, $lazyimgbinding ) : str_replace( '[syv_image_src]', $srcdefault, $nonlazyimgbinding );
+
+        $imglazycontent = optimize_youtube_video_urlreplace_fromvar($lazyimgbinding, $iframe, $iframe['thumbreso']);
+        $imgnonlazycontent = optimize_youtube_video_urlreplace_fromvar($nonlazyimgbinding, $iframe, $iframe['thumbreso']);
+        
+        $imgattrs = $iframe['lazyload'] ? $imglazycontent : $imgnonlazycontent;
+
         $content .= '
-        <img '.$imgsrc.' width="'.$allowed_resolutions[$iframe['thumbreso']]['width'].'" height="'.$allowed_resolutions[$iframe['thumbreso']]['height'].'" alt="'.$iframe['title'].'" />';
+        <img '.$imgattrs.' width="'.$allowed_resolutions[$iframe['thumbreso']]['width'].'" height="'.$allowed_resolutions[$iframe['thumbreso']]['height'].'" alt="'.$iframe['title'].'" />';
     endif;
 
     $content .= '<noscript>';
