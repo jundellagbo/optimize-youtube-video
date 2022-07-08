@@ -1,19 +1,16 @@
 # Optimize Youtube Video
 
 Optimize youtube videos considering webp thumbnails and adapting to any lazyloading plugin.
-
 Not using JQuery!
-
 If javascript is disabled, it will go back to iframe.
-
 Flexible to any lazyload plugin, you can follow their markup and have a full control for the thumbnails.
 
-### Improving your page speed score
+## Improving your page speed score
 * Lazy load third-party resources with facades
 * Next-gen format for thumbnails
 * Lowest contentful paint | disable lazyload to those thumbnails in Above-The-Fold content
 
-### Features
+## Features
 * Automatically convert your iFrame with youtube source link to thumbnails
 * Adapting to any lazyload Plugins
 * No lazyload js included to reduce http request
@@ -23,14 +20,13 @@ Flexible to any lazyload plugin, you can follow their markup and have a full con
 * Global settings for all youtube videos
 * Using inline and minimal css and javascript to prevent render-blocking
 
-### Installation
+## Installation
 * Go to Plugins > Add New > Optimize Youtube Video
 * Go to Settings > Optimize Youtube Video
 
-
-### Tips
+## Tips
 * Do not lazyload above the fold thumbnails
 * For WP Rocket - disable "Replace Youtube videos by thumbnail" in Lazyload Tab
 
-### Maintainer
+## Maintainer
 * [Jundell Agbo](https://profiles.wordpress.org/jundellagbo/)
