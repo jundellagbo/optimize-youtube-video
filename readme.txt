@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/jundellagbo
 Requires at least: 5.1
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,6 @@ Flexible to any lazyload plugin, you can follow their markup and have a full con
 = Improving your page speed score =
 * Lazy load third-party resources with facades
 * Next-gen format for thumbnails | webp format
-* Lowest contentful paint | disable lazyload those thumbnails in Above-The-Fold content
 * Responsive Thumbnails with srcset snippet or alternate mobile thumbnail
 
 = Features =
@@ -28,7 +27,7 @@ Flexible to any lazyload plugin, you can follow their markup and have a full con
 * Can access youtube thumbnail as variable | available to all thumbnail resolutions
 * Full control output for youtube videos and their thumbnails
 * Auto-resize thumbnail in mobile from iframe attribute or global settings
-* Using inline and minimal css and javascript to prevent render-blocking
+* Using inline and minimal css and javascript
 * Minified outputs
 
 = Installation =
@@ -38,6 +37,7 @@ Flexible to any lazyload plugin, you can follow their markup and have a full con
 = Tips =
 * Do not lazyload above the fold thumbnails
 * For WP Rocket or LazyLoad plugin - disable "Replace Youtube videos by thumbnail" in Lazyload Tab
+* Disable lazyload thumbnails in above-the-fold content to improve LCP
 
 = Maintainer =
 * [Jundell Agbo](https://profiles.wordpress.org/jundellagbo/)

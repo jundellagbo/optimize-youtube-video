@@ -3,7 +3,7 @@
 Plugin Name: Optimize Youtube Video
 Text Domain: optimize-youtube-video
 Description: Optimize youtube videos considering webp thumbnails and flexible output, compatible to any lazyloading plugins.
-Version: 1.0.0
+Version: 1.1.0
 Author: Jundell Agbo
 Author URI: https://profiles.wordpress.org/jundellagbo/
 License: GPLv2 or later
@@ -74,6 +74,10 @@ function optimize_youtube_video_carbon_fields_settings() {
 
         Field::make( 'checkbox', 'optimize_youtube_video_usewebpthumbnail', 'Use webp for youtube thumbnails' )
         ->set_default_value( true ),
+
+        Field::make( 'checkbox', 'optimize_youtube_video_isuserloggedin', 'Enable lazy image binding for loggedin users' )
+        ->set_default_value( true ),
+
         Field::make( 'text', 'optimize_youtube_video_playicon', 'Play Icon URL' )
         ->set_help_text( 'Using webp icon by default.' ),
 
@@ -122,8 +126,8 @@ function optimize_youtube_video_carbon_fields_settings() {
         <p>* Max Res -> maxresdefault 1280x720</p>
         ' ),
         Field::make( 'textarea', 'optimize_youtube_video_iframeattributes', 'Youtube iFrame attributes' )
-        ->set_default_value( 'frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"' )
-        ->set_help_text( 'To be added to your generated iframe tag.' ),
+        ->set_default_value( 'frameborder=\'0\' allowfullscreen=\'1\' allow=\'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\'' )
+        ->set_help_text( 'To be added to your generated iframe tag. USE SINGLE QUOTE FOR THE ATTRIBUTE VALUES LIKE WHAT YOU SEE IN THE DEFAULT' ),
         
         Field::make( 'html', 'optimize_youtube_video_imglazymarkup_id')
         ->set_html( '
@@ -374,7 +378,8 @@ function optimize_youtube_video_override_youtubeiframes( $content ) {
 
         $nolazy_load_lists = '(data-no-lazy|loading="eager"|data-skip-lazy|skip-lazy)';
 
-        if ( preg_match( $nolazy_load_lists, $iframe['atts'], $atts ) || is_user_logged_in() ) {
+        $enable_lazyload_loggedin_users = carbon_get_theme_option('optimize_youtube_video_isuserloggedin');
+        if ( preg_match( $nolazy_load_lists, $iframe['atts'], $atts ) || (!$enable_lazyload_loggedin_users && is_user_logged_in()) ) {
             $iframe['lazyload'] = false;
         }
 
