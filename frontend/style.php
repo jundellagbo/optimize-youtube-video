@@ -15,7 +15,7 @@ $videowrapbgcolor = isset($videowrapbgcolor) && !empty($videowrapbgcolor) ? $vid
         display: flex;
         align-items: center;
         justify-content: center;
-        background: <?php echo esc_attr( __( $videowrapbgcolor, 'optimize-youtube-video' )); ?>;
+        background: <?php echo esc_attr( $videowrapbgcolor ); ?>;
     }
     .youtube-video-ts img {
         object-fit: cover;
@@ -52,7 +52,7 @@ $videowrapbgcolor = isset($videowrapbgcolor) && !empty($videowrapbgcolor) ? $vid
         left: 0;
         top: 0;
         position: absolute;
-        background: url(<?php echo esc_url( __( $simpleyoutubevideoiconurl, 'optimize-youtube-video' ) ); ?>) no-repeat center;
+        background: url(<?php echo esc_url( $simpleyoutubevideoiconurl ); ?>) no-repeat center;
         background-color: transparent !important;
         cursor: pointer;
         border: none;
