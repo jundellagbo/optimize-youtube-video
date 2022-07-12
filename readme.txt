@@ -44,5 +44,11 @@ Flexible to any lazyload plugin, you can follow their markup and have a full con
 
 == Changelog ==
 
+= 1.2.0
+* removing variable translations
+
+= 1.1.0
+* add option to enable lazyload for loggedin user, escape variables
+
 = 1.0.0
 * First major release
