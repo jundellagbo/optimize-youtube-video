@@ -3,7 +3,7 @@
 Plugin Name: Optimize Youtube Video
 Text Domain: optimize-youtube-video
 Description: Optimize youtube videos considering webp thumbnails and flexible output, compatible to any lazyloading plugins.
-Version: 1.2.0
+Version: 1.2.1
 Author: Jundell Agbo
 Author URI: https://profiles.wordpress.org/jundellagbo/
 License: GPLv2 or later
