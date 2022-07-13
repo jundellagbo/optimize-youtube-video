@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/jundellagbo
 Requires at least: 5.1
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +43,11 @@ Flexible to any lazyload plugin, you can follow their markup and have a full con
 * [Jundell Agbo](https://profiles.wordpress.org/jundellagbo/)
 
 == Changelog ==
+
+= 1.2.2
+* fix nowebp typo
+* set hqdefault for desktop
+* set mqdefault for mobile
 
 = 1.2.1
 * fix vendor

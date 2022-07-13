@@ -3,7 +3,7 @@
 Plugin Name: Optimize Youtube Video
 Text Domain: optimize-youtube-video
 Description: Optimize youtube videos considering webp thumbnails and flexible output, compatible to any lazyloading plugins.
-Version: 1.2.1
+Version: 1.2.2
 Author: Jundell Agbo
 Author URI: https://profiles.wordpress.org/jundellagbo/
 License: GPLv2 or later
@@ -41,8 +41,8 @@ function optimize_youtube_video_carbon_fields_settings() {
                     src="https://www.youtube.com/embed/dQw4w9WgXcQ"
                     width="560"
                     height="315"
-                    nopwebp="1"
-                    thumbreso="sddefault"
+                    nowebp="1"
+                    thumbreso="hqdefault"
                     thumbresomobile="mqdefault"
                     data-no-lazy
                     loading="eager"
@@ -73,6 +73,7 @@ function optimize_youtube_video_carbon_fields_settings() {
         '),
 
         Field::make( 'checkbox', 'optimize_youtube_video_usewebpthumbnail', 'Use webp for youtube thumbnails' )
+        ->set_help_text( 'Note: if thumbnail webp is not working, rollback to jpg with nowebp iframe attribute or disable this option.' )
         ->set_default_value( true ),
 
         Field::make( 'checkbox', 'optimize_youtube_video_isuserloggedin', 'Enable lazy image binding for loggedin users' )
@@ -101,7 +102,7 @@ function optimize_youtube_video_carbon_fields_settings() {
             'hqdefault' => 'High',
             'maxresdefault' => 'Max Res'
         ) )
-        ->set_default_value( 'sddefault' )
+        ->set_default_value( 'hqdefault' )
         ->set_help_text( 'You can change this to your iframe attribute.' ),
         
         Field::make( 'select', 'optimize_youtube_video_media_thumbnail_size_mobile', 'Media Thumbnail Size (Mobile)' )
@@ -172,9 +173,9 @@ function optimize_youtube_video_carbon_fields_settings() {
         Field::make( 'html', 'optimize_youtube_video_implementation_and_markup')
         ->set_html( '
         <h3 id="attributes">Attribute Details</h3>
-        <p><strong>nopwebp</strong> - (optional) | Back to jpg format thumbnail (Not Recommended, use webp for next-gen format images by removing this attribute, removed by default)</p>
+        <p><strong>nowebp</strong> - (optional) | add this option if webp is not supported on your video.</p>
         <p><strong>ytargs</strong> - (optional) | query parameters for the video source, if you don\'t want auto play after click leave it empty, removed by default</p>
-        <p><strong>thumbreso</strong> - (optional) (default: <strong>sddefault</strong>) | Resolution of the thumbnail for Desktop</p>
+        <p><strong>thumbreso</strong> - (optional) (default: <strong>hqdefault</strong>) | Resolution of the thumbnail for Desktop</p>
         <p><strong>thumbresomobile</strong> - (optional) (default: <strong>mqdefault</strong>) | Resolution of the thumbnail for Mobile</p>
         <p><a href="#resodetails">Click here</a> for resolution details.</p>
         <strong>Disabling Lazyload by adding any of these attributes</strong>
@@ -182,7 +183,9 @@ function optimize_youtube_video_carbon_fields_settings() {
 
 
         <br></br>
-        <h1 id="workingsrcset">Working with SRCSET? Try this snippet to your Lazy Images Custom Binding</h1><br>
+        <h1 id="workingsrcset">Working with SRCSET? Try this snippet to your Lazy Images Custom Binding</h1>
+        <p>If all your videos\'s has these resolutions then it is safe to implement this, otherwise remove non-compatible resolution and sizes.</p>
+        <br>
         <code>
             srcset="[syv_image_src_default] 120w,<br>
             [syv_image_src_mqdefault] 320w,<br>
@@ -203,7 +206,7 @@ function optimize_youtube_video_carbon_fields_settings() {
         <code>
             &lt;div class="youtube-video-ts"&gt; <br>
                 &lt;div data-img-webpfield data-yt-src="https://www.youtube.com/embed/dQw4w9WgXcQ" width="560" height="315" style="width: 560px; height: 315px;"&gt; <br>
-                    &lt;img src="https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/hqdefault.webp" width="480" height="360" alt="Youtube title here" /&gt; <br>
+                    &lt;img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" width="480" height="360" alt="Youtube title here" /&gt; <br>
                     &lt;button class="play" aria-label="play Youtube video"&gt; &lt;/button&gt; <br>
                 &lt;/div&gt; <br>
             &lt;/div&gt;
@@ -342,9 +345,9 @@ function optimize_youtube_video_override_youtubeiframes( $content ) {
 
         $carbonfield_thumb_reso_mobiledefault = carbon_get_theme_option('optimize_youtube_video_media_thumbnail_size');
 
-        $iframe['thumbreso'] = !isset($carbonfield_thumb_reso_default) || empty($carbonfield_thumb_reso_default) ? 'sddefault' : $carbonfield_thumb_reso_default;
+        $iframe['thumbreso'] = !isset($carbonfield_thumb_reso_default) || empty($carbonfield_thumb_reso_default) ? 'hqdefault' : $carbonfield_thumb_reso_default;
 
-        $iframe['thumbresomobile'] = !isset($carbonfield_thumb_reso_mobiledefault) || empty($carbonfield_thumb_reso_mobiledefault) ? 'sddefault' : $carbonfield_thumb_reso_mobiledefault;
+        $iframe['thumbresomobile'] = !isset($carbonfield_thumb_reso_mobiledefault) || empty($carbonfield_thumb_reso_mobiledefault) ? 'mqdefault' : $carbonfield_thumb_reso_mobiledefault;
 
         $iframe['lazyload'] = true;
 
@@ -369,11 +372,11 @@ function optimize_youtube_video_override_youtubeiframes( $content ) {
         }
 
         if ( preg_match( '@\sthumbreso\s*=\s*(\'|")(?<thumbreso>.*)\1@iUs', $iframe['atts'], $atts ) ) {
-            $iframe['thumbreso'] = isset( $allowed_resolutions[$atts['thumbreso']] ) ? $atts['thumbreso'] : 'sddefault';
+            $iframe['thumbreso'] = isset( $allowed_resolutions[$atts['thumbreso']] ) ? $atts['thumbreso'] : 'hqdefault';
         }
 
         if ( preg_match( '@\sthumbresomobile\s*=\s*(\'|")(?<thumbresomobile>.*)\1@iUs', $iframe['atts'], $atts ) ) {
-            $iframe['thumbresomobile'] = isset( $allowed_resolutions[$atts['thumbresomobile']] ) ? $atts['thumbresomobile'] : 'sddefault';
+            $iframe['thumbresomobile'] = isset( $allowed_resolutions[$atts['thumbresomobile']] ) ? $atts['thumbresomobile'] : 'hqdefault';
         }
 
         $nolazy_load_lists = '(data-no-lazy|loading="eager"|data-skip-lazy|skip-lazy)';
@@ -397,7 +400,7 @@ function optimize_youtube_video_override_youtubeiframes( $content ) {
     return $content;
 }
 
-function optimize_youtube_video_getimgurl( $iframe, $reso="sddefault" ) {
+function optimize_youtube_video_getimgurl( $iframe, $reso="hqdefault" ) {
 
     $type = $iframe['nowebp'] ? 'vi' : 'vi_webp';
 
